@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: dsp-postgres
+    environment:
+      POSTGRES_USER: dsp-user
+      POSTGRES_PASSWORD: dsp-password
+      POSTGRES_DB: dsp
+    volumes:
+      - ./keys:/keys
+      - ./data-db:/var/lib/postgresql/data
+      - ./pg_hba.conf:/pg_hba.conf
+    ports:
+      - "5432:5432"
+    command: |
+      postgres -c ssl=on -c ssl_ca_file=/keys/ca.crt -c ssl_cert_file=/keys/server.crt -c ssl_key_file=/keys/server.key -c hba_file=/pg_hba.conf
