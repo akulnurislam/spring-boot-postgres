@@ -2,6 +2,8 @@ package com.akul.dsp.exception;
 
 import com.akul.dsp.dto.ErrorDTO;
 import com.akul.dsp.util.Date;
+import io.jsonwebtoken.io.DecodingException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -31,5 +33,16 @@ public class GlobalExceptionHandler {
                 .fields(fields)
                 .build();
         return ResponseEntity.badRequest().body(errorDTO);
+    }
+
+    @ExceptionHandler({SignatureException.class, DecodingException.class})
+    public ResponseEntity<ErrorDTO> handleSignatureException(WebRequest req) {
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .timestamp(Date.timestamp())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                .path(req.getDescription(false).substring(4))
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDTO);
     }
 }
