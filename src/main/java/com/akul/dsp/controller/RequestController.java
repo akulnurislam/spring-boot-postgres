@@ -15,7 +15,7 @@ import java.net.URI;
 public class RequestController {
 
     @PostMapping
-    public ResponseEntity<String> request(@RequestBody @Valid RequestDTO requestDTO) {
+    public ResponseEntity<Void> request(@RequestBody @Valid RequestDTO requestDTO) {
         System.out.println(requestDTO);
         return ResponseEntity.created(URI.create("/request")).build();
     }
