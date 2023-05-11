@@ -1,6 +1,6 @@
 package com.akul.dsp.util;
 
-import com.akul.dsp.config.JWTProperties;
+import com.akul.dsp.config.AppProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -25,15 +25,15 @@ import java.util.Date;
 @Component
 public class JWT {
 
-    private final JWTProperties jwtProperties;
+    private final AppProperties appProperties;
 
     private KeyPair keyPair;
 
     @PostConstruct
     public void init() {
         try {
-            PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(encodedBytes("app_private_key.pem"));
-            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(encodedBytes("app_public_key.pem"));
+            PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(encodedBytes(appProperties.getRsa().getPrivateKey()));
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(encodedBytes(appProperties.getRsa().getPublicKey()));
 
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
@@ -69,7 +69,7 @@ public class JWT {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        calendar.add(Calendar.SECOND, jwtProperties.getExpiration());
+        calendar.add(Calendar.SECOND, appProperties.getJwt().getExpiration());
         Date exp = calendar.getTime();
 
         return Jwts.builder()
