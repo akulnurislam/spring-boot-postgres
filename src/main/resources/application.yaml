@@ -1,3 +1,2 @@
 jwt:
-  secret: imsecret
   expiration: 86400
