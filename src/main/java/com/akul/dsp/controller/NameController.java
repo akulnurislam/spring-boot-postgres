@@ -2,16 +2,20 @@ package com.akul.dsp.controller;
 
 import com.akul.dsp.dto.NameDTO;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/name")
 public class NameController {
 
     @GetMapping
-    public ResponseEntity<String> getName() {
-        return ResponseEntity.ok("imname");
+    public ResponseEntity<String> getName(
+            @RequestAttribute("phoneNumber") String phoneNumber
+    ) {
+        return ResponseEntity.ok(phoneNumber);
     }
 
     @PutMapping
