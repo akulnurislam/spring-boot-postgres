@@ -1,0 +1,10 @@
+spring:
+  main:
+    banner-mode: off
+
+logging:
+  level:
+    root: off
+    'org.springframework.security.web': error
+    'org.hibernate.engine.jdbc.spi.SqlExceptionHelper': error
+    'com.akul.dsp.config.JWTFilter': error
