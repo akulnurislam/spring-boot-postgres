@@ -55,23 +55,23 @@ public class JWTFilter extends OncePerRequestFilter {
             String subject = jwt.getSubject(authorization);
             request.setAttribute("phoneNumber", subject);
         } catch (ExpiredJwtException ex) {
-            log.error("jwt expired", ex);
+            log.warn("jwt expired", ex);
             forbiddenResponse(request, response);
             return;
         } catch (UnsupportedJwtException ex) {
-            log.error("jwt is not supported", ex);
+            log.warn("jwt is not supported", ex);
             forbiddenResponse(request, response);
             return;
         } catch (MalformedJwtException ex) {
-            log.error("jwt is invalid", ex);
+            log.warn("jwt is invalid", ex);
             forbiddenResponse(request, response);
             return;
         } catch (SignatureException ex) {
-            log.error("signature validation failed", ex);
+            log.warn("signature validation failed", ex);
             forbiddenResponse(request, response);
             return;
         } catch (IllegalArgumentException ex) {
-            log.error("token is null, empty or only whitespace", ex);
+            log.warn("token is null, empty or only whitespace", ex);
             forbiddenResponse(request, response);
             return;
         }
