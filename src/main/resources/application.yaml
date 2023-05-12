@@ -1,9 +1,8 @@
 app:
-  rsa:
-    privateKey: keys/app-private-key.pem
-    publicKey: keys/app-public-key.pem
   jwt:
     expiration: 86400
+    privateKey: keys/app-private-key.pem
+    publicKey: keys/app-public-key.pem
 
 logging:
   level:

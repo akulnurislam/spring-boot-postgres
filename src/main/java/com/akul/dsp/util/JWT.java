@@ -33,8 +33,9 @@ public class JWT {
     @PostConstruct
     public void init() {
         try {
-            PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(encodedBytes(appProperties.getRsa().getPrivateKey()));
-            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(encodedBytes(appProperties.getRsa().getPublicKey()));
+            PKCS8EncodedKeySpec privateKeySpec =
+                    new PKCS8EncodedKeySpec(encodedBytes(appProperties.getJwt().getPrivateKey()));
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(encodedBytes(appProperties.getJwt().getPublicKey()));
 
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
