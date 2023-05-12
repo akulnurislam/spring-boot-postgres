@@ -52,4 +52,26 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDTO);
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleNotFoundException(NotFoundException ex, WebRequest req) {
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .timestamp(Date.timestamp())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(ex.getMessage())
+                .path(req.getDescription(false).substring(4))
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDTO);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorDTO> handleUnauthorizedException(WebRequest req) {
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .timestamp(Date.timestamp())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                .path(req.getDescription(false).substring(4))
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDTO);
+    }
 }
