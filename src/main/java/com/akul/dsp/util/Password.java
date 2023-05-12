@@ -12,8 +12,8 @@ public class Password {
     }
 
     public static boolean verify(String password, String salt, String hashedPassword) {
-        String hashed = hash(password, salt);
-        return hashed.equals(hashedPassword);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(password + salt, hashedPassword);
     }
 
     public static String salt() {
