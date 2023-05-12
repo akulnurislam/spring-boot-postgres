@@ -38,9 +38,7 @@ public class NameController {
     public ResponseEntity<NameResponseDTO> updateName(
             @RequestAttribute("phoneNumber") String phoneNumber,
             @RequestBody @Valid NameDTO nameDTO) {
-        User user = userService.updateByPhoneNumber(
-                phoneNumber,
-                User.builder().name(nameDTO.getName()).build());
+        User user = userService.updateByPhoneNumber(phoneNumber, nameDTO);
         return ResponseEntity.ok(
                 NameResponseDTO.builder()
                         .name(user.getName())

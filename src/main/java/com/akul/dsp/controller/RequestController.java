@@ -1,7 +1,6 @@
 package com.akul.dsp.controller;
 
 import com.akul.dsp.dto.RequestDTO;
-import com.akul.dsp.model.User;
 import com.akul.dsp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +19,7 @@ public class RequestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> request(@RequestBody @Valid RequestDTO requestDTO) {
-        userService.create(
-                User.builder()
-                        .phoneNumber(requestDTO.getPhoneNumber())
-                        .name(requestDTO.getName())
-                        .password(requestDTO.getPassword())
-                        .build());
+        userService.create(requestDTO);
         return ResponseEntity.created(URI.create("/request")).build();
     }
 }
