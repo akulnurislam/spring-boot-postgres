@@ -1,6 +1,9 @@
 package com.akul.dsp.controller;
 
 import com.akul.dsp.dto.NameDTO;
+import com.akul.dsp.dto.NameResponseDTO;
+import com.akul.dsp.model.User;
+import com.akul.dsp.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -16,21 +19,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/name")
 @SecurityScheme(name = "Authorization", type = SecuritySchemeType.HTTP, scheme = "bearer")
 public class NameController {
+    private final UserService userService;
 
     @GetMapping
     @Operation(description = "API get name", security = @SecurityRequirement(name = "Authorization"))
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> getName(
-            @RequestAttribute("phoneNumber") String phoneNumber
-    ) {
-        return ResponseEntity.ok(phoneNumber);
+    public ResponseEntity<NameResponseDTO> getName(@RequestAttribute("phoneNumber") String phoneNumber) {
+        User user = userService.findOneByPhoneNumber(phoneNumber);
+        return ResponseEntity.ok(
+                NameResponseDTO.builder()
+                        .name(user.getName())
+                        .build());
     }
 
     @PutMapping
     @Operation(description = "API update name", security = @SecurityRequirement(name = "Authorization"))
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> updateName(@RequestBody @Valid NameDTO nameDTO) {
-        System.out.println(nameDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<NameResponseDTO> updateName(
+            @RequestAttribute("phoneNumber") String phoneNumber,
+            @RequestBody @Valid NameDTO nameDTO) {
+        User user = userService.updateByPhoneNumber(
+                phoneNumber,
+                User.builder().name(nameDTO.getName()).build());
+        return ResponseEntity.ok(
+                NameResponseDTO.builder()
+                        .name(user.getName())
+                        .build());
     }
 }
