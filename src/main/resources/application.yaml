@@ -4,3 +4,8 @@ app:
     publicKey: app-public-key.pem
   jwt:
     expiration: 86400
+
+logging:
+  level:
+    root: info
+    'org.springframework.security.web': error
