@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -81,6 +82,10 @@ public class JWT {
     }
 
     public String getSubject(String token) {
+        if (Strings.isEmpty(token)) {
+            throw new IllegalArgumentException("token empty");
+        }
+
         String t = token.replaceAll("^[Bb]earer ", "");
         Jws<Claims> claims = Jwts.parserBuilder()
                 .setSigningKey(keyPair.getPublic())
