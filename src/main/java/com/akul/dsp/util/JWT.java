@@ -49,7 +49,7 @@ public class JWT {
 
     private byte[] encodedBytes(String fileName) {
         try {
-            String path = Paths.get(System.getProperty("user.dir"), "keys", fileName).toString();
+            String path = Paths.get(System.getProperty("user.dir"), fileName).toString();
             byte[] keyBytes = Files.readAllBytes(new File(path).toPath());
 
             String key = new String(keyBytes);
