@@ -4,9 +4,11 @@ import com.akul.dsp.validator.CapitalAndNumber;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+@Builder
 @ToString
 @Getter
 public class LoginDTO {

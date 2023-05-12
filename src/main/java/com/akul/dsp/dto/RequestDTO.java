@@ -2,9 +2,11 @@ package com.akul.dsp.dto;
 
 import com.akul.dsp.validator.CapitalAndNumber;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+@Builder
 @ToString
 @Getter
 public class RequestDTO {
