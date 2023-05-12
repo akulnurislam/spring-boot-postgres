@@ -2,13 +2,11 @@ package com.akul.dsp.dto;
 
 import com.akul.dsp.validator.CapitalAndNumber;
 import jakarta.validation.constraints.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @ToString
-@Getter
+@Data
 public class RequestDTO {
     @NotBlank
     @Size(min = 10, max = 13)

@@ -2,13 +2,11 @@ package com.akul.dsp.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @ToString
-@Getter
+@Data
 public class NameDTO {
     @NotBlank
     @Size(max = 60, message = "size must be less than equal 60")

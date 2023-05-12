@@ -4,13 +4,11 @@ import com.akul.dsp.validator.CapitalAndNumber;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @ToString
-@Getter
+@Data
 public class LoginDTO {
     @NotBlank
     @Size(min = 10, max = 13)

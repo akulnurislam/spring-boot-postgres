@@ -34,9 +34,9 @@ public class LoginServiceTest {
         when(userService.findOneByPhoneNumber(phoneNumber)).thenReturn(user);
         when(jwt.generate(phoneNumber)).thenReturn(token);
 
-        LoginDTO dto = LoginDTO.builder()
-                .phoneNumber(phoneNumber)
-                .password(password).build();
+        LoginDTO dto = new LoginDTO();
+        dto.setPhoneNumber(phoneNumber);
+        dto.setPassword(password);
         String generatedToken = loginService.generateToken(dto);
 
         verify(userService, times(1)).findOneByPhoneNumber(phoneNumber);
@@ -59,10 +59,9 @@ public class LoginServiceTest {
         when(userService.findOneByPhoneNumber(phoneNumber)).thenReturn(user);
 
         assertThrows(UnauthorizedException.class, () -> {
-            LoginDTO dto = LoginDTO.builder()
-                    .phoneNumber(phoneNumber)
-                    .password(password)
-                    .build();
+            LoginDTO dto = new LoginDTO();
+            dto.setPhoneNumber(phoneNumber);
+            dto.setPassword(password);
             loginService.generateToken(dto);
         });
 

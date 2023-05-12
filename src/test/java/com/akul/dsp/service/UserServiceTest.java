@@ -57,11 +57,10 @@ public class UserServiceTest {
 
     @Test
     public void createTest() {
-        RequestDTO dto = RequestDTO.builder()
-                .phoneNumber("081288885555")
-                .name("im-name")
-                .password("im-password")
-                .build();
+        RequestDTO dto = new RequestDTO();
+        dto.setPhoneNumber("081288885555");
+        dto.setName("im-name");
+        dto.setPassword("im-password");
         userService.create(dto);
 
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
@@ -98,9 +97,8 @@ public class UserServiceTest {
 
         when(userRepository.save(user)).thenReturn(user);
 
-        NameDTO dto = NameDTO.builder()
-                .name(updatedName)
-                .build();
+        NameDTO dto = new NameDTO();
+        dto.setName(updatedName);
         User updatedUser = userService.updateByPhoneNumber(phoneNumber, dto);
 
         verify(userRepository, times(1)).findByPhoneNumber(phoneNumber);
@@ -120,9 +118,8 @@ public class UserServiceTest {
         when(userRepository.findByPhoneNumber(phoneNumber)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(NotFoundException.class, () -> {
-            NameDTO dto = NameDTO.builder()
-                    .name(updatedName)
-                    .build();
+            NameDTO dto = new NameDTO();
+            dto.setName(updatedName);
             userService.updateByPhoneNumber(phoneNumber, dto);
         });
 
