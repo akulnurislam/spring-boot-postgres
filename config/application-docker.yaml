@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+app:
+  jwt:
+    expiration: 86400
+    privateKey: keys/app-private-key.pem
+    publicKey: keys/app-public-key.pem
+
+logging:
+  level:
+    root: info
+    'org.springframework.security.web': error
+    'org.hibernate.engine.jdbc.spi.SqlExceptionHelper': error
+    'com.akul.dsp.config.JWTFilter': error
+
+spring:
+  datasource:
+    url: jdbc:postgresql://dsp-pg:5432/dsp?ssl=true&sslmode=verify-full&sslrootcert=${user.dir}/keys/ca.crt&sslcert=${user.dir}/keys/dsp-user.crt&sslkey=${user.dir}/keys/dsp-user.pk8
+    username: dsp-user
+    password: dsp-password
+    hikari:
+      connection-timeout: 600000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+  jpa:
+    database: postgresql
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
