@@ -16,7 +16,5 @@ public class LoginDTO {
     private String phoneNumber;
 
     @NotBlank
-    @Size(min = 6, max = 16)
-    @CapitalAndNumber(message = "must be containing at least 1 capital letter and 1 number")
     private String password;
 }
