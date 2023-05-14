@@ -1,9 +1,15 @@
 version: '3.9'
 
+networks:
+  dsp-network:
+    driver: bridge
+
 services:
-  db:
-    image: postgres:15-alpine
-    container_name: dsp-postgres
+  dsp-pg:
+    image: postgres:15.3-alpine
+    container_name: dsp-pg
+    networks:
+      - dsp-network
     environment:
       POSTGRES_USER: dsp-user
       POSTGRES_PASSWORD: dsp-password
@@ -13,6 +19,27 @@ services:
       - ./data-db:/var/lib/postgresql/data
       - ./pg_hba.conf:/pg_hba.conf
     ports:
-      - "5432:5432"
+      - 5432:5432
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -d dsp -U dsp-user' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     command: |
       postgres -c ssl=on -c ssl_ca_file=/keys/ca.crt -c ssl_cert_file=/keys/server.crt -c ssl_key_file=/keys/server.key -c hba_file=/pg_hba.conf
+  dsp-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dsp-app:latest
+    container_name: dsp-app
+    networks:
+      - dsp-network
+    volumes:
+      - ./keys:/app/keys
+      - ./config/application-docker.yaml:/app/application.yaml
+    depends_on:
+      dsp-pg:
+        condition: service_healthy
+    ports:
+      - 8080:8080
