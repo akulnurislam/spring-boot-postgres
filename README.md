@@ -40,6 +40,7 @@ password : dsp-password
 we put configuration for application is inside `config` folder use `application.yaml`
 
 #### start
+- `$ chmod 400 keys/dsp-user.key && chmod 400 keys/server.key`
 - `$ docker compose up`
 - then open `http://localhost:8080/swagger-ui/index.html`
 
