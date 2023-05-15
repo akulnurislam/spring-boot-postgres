@@ -33,7 +33,7 @@ services:
       dockerfile: Dockerfile
     image: dsp-app:latest
     container_name: dsp-app
-    restart: on-failure
+    restart: on-failure:10
     networks:
       - dsp-network
     volumes:
