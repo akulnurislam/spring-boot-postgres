@@ -3,9 +3,7 @@ package com.akul.dsp.dto;
 import com.akul.dsp.validator.CapitalAndNumber;
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import lombok.ToString;
 
-@ToString
 @Data
 public class RequestDTO {
     @NotBlank
