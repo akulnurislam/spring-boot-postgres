@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static java.lang.String.format;
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,21 +46,30 @@ public class RequestControllerTest {
 
     @Test
     public void requestTest() throws Exception {
-        doNothing().when(userService).create(any(RequestDTO.class));
+        String phoneNumber = "081288885555";
+        String name = "im-name";
+        String password = "abcdE1";
 
-        String json = """
+        RequestDTO dto = new RequestDTO();
+        dto.setPhoneNumber(phoneNumber);
+        dto.setName(name);
+        dto.setPassword(password);
+
+        doNothing().when(userService).create(dto);
+
+        String json = format("""
                 {
-                  "phoneNumber": "081288885555",
-                  "name": "im-name",
-                  "password": "abcdE1"
+                  "phoneNumber": "%s",
+                  "name": "%s",
+                  "password": "%s"
                 }
-                """;
+                """, phoneNumber, name, password);
         mockMvc.perform(post("/request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated());
 
-        verify(userService, times(1)).create(any(RequestDTO.class));
+        verify(userService, times(1)).create(dto);
     }
 
     @Test
@@ -67,19 +77,30 @@ public class RequestControllerTest {
         PSQLException psqlEx = new PSQLException("duplicate", PSQLState.UNIQUE_VIOLATION);
         DataIntegrityViolationException divEx = new DataIntegrityViolationException("duplicate", psqlEx);
 
-        doThrow(divEx).when(userService).create(any(RequestDTO.class));
+        String phoneNumber = "081288885555";
+        String name = "im-name";
+        String password = "abcdE1";
 
-        String json = """
+        RequestDTO dto = new RequestDTO();
+        dto.setPhoneNumber(phoneNumber);
+        dto.setName(name);
+        dto.setPassword(password);
+
+        doThrow(divEx).when(userService).create(dto);
+
+        String json = format("""
                 {
-                  "phoneNumber": "081288885555",
-                  "name": "im-name",
-                  "password": "abcdE1"
+                  "phoneNumber": "%s",
+                  "name": "%s",
+                  "password": "%s"
                 }
-                """;
+                """, phoneNumber, name, password);
         mockMvc.perform(post("/request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isConflict());
+
+        verify(userService, times(1)).create(dto);
     }
 
     @Test
