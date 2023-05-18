@@ -4,8 +4,8 @@ server:
 app:
   jwt:
     expiration: 86400
-    privateKey: keys/app-private-key.pem
-    publicKey: keys/app-public-key.pem
+    private-key: keys/app-private-key.pem
+    public-key: keys/app-public-key.pem
 
 logging:
   level:
