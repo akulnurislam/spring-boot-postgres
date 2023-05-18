@@ -2,6 +2,7 @@ package com.akul.dsp.controller;
 
 import com.akul.dsp.dto.RequestDTO;
 import com.akul.dsp.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/request")
+@Tag(name = "Request")
 public class RequestController {
     private final UserService userService;
 
