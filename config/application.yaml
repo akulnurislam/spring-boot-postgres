@@ -16,7 +16,7 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/dsp?ssl=true&sslmode=verify-full&sslrootcert=${user.dir}/keys/ca.crt&sslcert=${user.dir}/keys/dsp-user.crt&sslkey=${user.dir}/keys/dsp-user.pk8
+    url: jdbc:postgresql://localhost:5433/dsp?ssl=true&sslmode=verify-full&sslrootcert=${user.dir}/keys/ca.crt&sslcert=${user.dir}/keys/dsp-user.crt&sslkey=${user.dir}/keys/dsp-user.pk8
     username: dsp-user
     password: dsp-password
     hikari:
