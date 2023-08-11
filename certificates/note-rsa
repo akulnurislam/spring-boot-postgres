@@ -1,0 +1,4 @@
+generate rsa for jwt rsa
+
+openssl genpkey -algorithm RSA -out app-private-key.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in app-private-key.pem -out app-public-key.pem

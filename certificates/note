@@ -1,0 +1,44 @@
+openssl req -new -x509 -days 365 -nodes -out ca.crt -keyout ca.key -subj "/CN=root-ca"
+
+openssl genrsa -des3 -out server.key 2048
+openssl rsa -in server.key -out server.key
+openssl req -new -nodes -key server.key -out server.csr -subj "/CN=localhost,kubernetes.docker.internal,dsp-pg" -addext "subjectAltName=DNS:localhost,DNS:kubernetes.docker.internal,DNS:dsp-pg" -config <(printf "[req]\ndistinguished_name=req\n[ext]\nsubjectAltName=DNS:localhost,DNS:kubernetes.docker.internal,DNS:dsp-pg")
+openssl x509 -req -in server.csr -days 365 -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt
+
+openssl req -new -nodes -key server.key -out server.csr -subj "/CN=dsp-pg.domain" -addext "subjectAltName=DNS:localhost,DNS:kubernetes.docker.internal,DNS:dsp-pg" -config <(printf "[req]\ndistinguished_name=req\n[ext]\nsubjectAltName=DNS:localhost,DNS:kubernetes.docker.internal,DNS:dsp-pg")
+openssl x509 -req -in server.csr -days 365 -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -sha256 -extfile <(printf "subjectAltName=DNS:localhost,DNS:kubernetes.docker.internal,DNS:dsp-pg")
+
+openssl req -in server.csr -noout -text
+openssl x509 -in server.crt -noout -text
+
+
+
+openssl genrsa -des3 -out client.key 2048
+openssl rsa -in client.key -out client.key
+openssl req -new -nodes -key client.key -out client.csr -subj "/CN=admin"
+openssl x509 -req -in client.csr -days 365 -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt
+
+chmod 400 server.key
+chmod 400 client.key
+
+// postgresql.conf 
+
+ssl = on
+ssl_ca_file = 'ca.crt'
+ssl_cert_file = 'server.crt'
+ssl_key_file = 'server.key'
+
+// pg_hba.conf
+
+hostnossl   all   all   0.0.0.0/0   reject
+hostnossl   all   all   ::/0        reject
+hostssl     all   all   0.0.0.0/0   cert clientcert=verify-full
+hostssl     all   all   ::/0        cert clientcert=verify-full
+
+// test
+
+psql 'host=localhost port=5432 dbname=local-db user=admin sslmode=verify-full sslcert=/client.crt sslkey=/client.key sslrootcert=/ca.crt'
+
+
+// key for postgres springbot
+openssl pkcs8 -topk8 -inform PEM -outform DER -in dsp-user.key -out dsp-user.pk8 -nocrypt

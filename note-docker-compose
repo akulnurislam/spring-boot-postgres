@@ -1,0 +1,2 @@
+docker compose up dsp-pg
+docker compose down --rmi all
